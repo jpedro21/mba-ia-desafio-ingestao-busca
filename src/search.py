@@ -1,3 +1,12 @@
+import os
+from dotenv import load_dotenv
+from langchain_openai import OpenAI
+from langchain_postgres import PGVector
+
+from openai_embedding import create_openai_embedding
+from util import get_embedding_model
+
+
 PROMPT_TEMPLATE = """
 CONTEXTO:
 {contexto}
@@ -25,5 +34,30 @@ PERGUNTA DO USUÁRIO:
 RESPONDA A "PERGUNTA DO USUÁRIO"
 """
 
+load_dotenv()
+
 def search_prompt(question=None):
-    pass
+
+    embeddings = get_embedding_model()
+
+    try:
+      store = PGVector(
+          embeddings=embeddings["embeddings"],
+          collection_name=embeddings["collection_name"],
+          connection=os.getenv("DATABASE_URL"),
+          use_jsonb=True,
+      )
+
+      results = store.similarity_search(question, k=10)
+      
+      context = "\n".join([result.page_content for result in results])
+
+      prompt = PROMPT_TEMPLATE.format(contexto=context, pergunta=question)
+
+      response = OpenAI(model="gpt-4o-mini").invoke(prompt)
+
+      return response
+
+    except Exception as e:
+      print(f"Error during search: {type(e).__name__}: {str(e)}")
+      raise
