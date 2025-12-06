@@ -14,4 +14,4 @@ def create_openai_embedding():
     else:
         embeddings = OpenAIEmbeddings(model=embedding_model)
 
-    return {"embeddings": embeddings, "collection_name": "gpt5_collection"}
+    return {"embeddings": embeddings, "collection_name": "gpt-5-nano"}

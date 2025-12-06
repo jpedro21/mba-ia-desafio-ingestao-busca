@@ -1,10 +1,10 @@
 import os
 from dotenv import load_dotenv
-from langchain_openai import OpenAI
+from langchain_openai import ChatOpenAI
 from langchain_postgres import PGVector
 
 from openai_embedding import create_openai_embedding
-from util import get_embedding_model
+from util import get_embedding_model, get_llm_model
 
 
 PROMPT_TEMPLATE = """
@@ -54,7 +54,7 @@ def search_prompt(question=None):
 
       prompt = PROMPT_TEMPLATE.format(contexto=context, pergunta=question)
 
-      response = OpenAI(model="gpt-4o-mini").invoke(prompt)
+      response = get_llm_model().invoke(prompt)
 
       return response
 

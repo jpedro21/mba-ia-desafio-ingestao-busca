@@ -42,7 +42,7 @@ def ingest_pdf():
     ids = [f"doc-{embeddings['collection_name']}-{i}" for i in range(len(enriched))]
     
     print("Connecting to PGVector database...")
-    print(f"Collection name: {os.getenv('PG_VECTOR_COLLECTION_NAME')}")
+    print(f"Collection name: {embeddings['collection_name']}")
     print(f"Database URL: {os.getenv('DATABASE_URL')}")
     
     try:

@@ -20,11 +20,11 @@ def create_gemini_embedding():
         raise ValueError("GOOGLE_API_KEY não encontrada nas variáveis de ambiente")
     
     # Modelo padrão recomendado para embeddings do Gemini (mais recente)
-    embedding_model = os.getenv("GEMINI_EMBEDDING_MODEL", "models/text-embedding-004")
+    embedding_model = os.getenv("GEMINI_EMBEDDING_MODEL", "models/embedding-001")
     
     embeddings = GoogleGenerativeAIEmbeddings(
         model=embedding_model,
         google_api_key=api_key
     )
     
-    return {"embeddings": embeddings, "collection_name": "gemini_collection"}
+    return {"embeddings": embeddings, "collection_name": "gemini-2.5-flash-lite"}
